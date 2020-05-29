@@ -25,4 +25,13 @@ public interface CarDao {
 
     @Insert("insert into carMessage(carName,carType,price,carSeries) values(#{carName},#{carType},#{price},#{carSeries})")
     void insertCar(Car car);
+
+    @Select("select num from carMessage where carName=#{carName};")
+    int selectNumByName(String carName);
+
+    @Update("update carMessage set num=#{newNum} where carName=#{carName};")
+    void updateNum(int newNum,String carName);
+
+    @Select("select * from carMessage where LOWER(carName) like #{carName}")
+    List<Car> findLikeCarName(String carName);
 }

@@ -1,10 +1,12 @@
 package com.jkxy.car.api.controller;
 
-import com.jkxy.car.api.pojo.Car;
+import com.jkxy.car.api.pojo.*;
 import com.jkxy.car.api.service.CarService;
 import com.jkxy.car.api.utils.JSONResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
@@ -84,5 +86,24 @@ public class CarController {
     public JSONResult insertCar(Car car) {
         carService.insertCar(car);
         return JSONResult.ok();
+    }
+
+    /**
+     * 作业一：购买车辆
+     */
+    @GetMapping("purchase")
+    public String buyCar(Purchase purchase) {
+        return carService.PurchaseCar(purchase);
+    }
+    /**
+     * 作业二：通过车品牌模糊查询，
+     */
+    @GetMapping("findByCarName")
+    public JSONResult findLikeCarName(@RequestParam String carName,@RequestParam int pageNum,@RequestParam int pageSize) {
+        carName="%"+carName.toLowerCase()+"%";
+        PageHelper.startPage(pageNum, pageSize);
+        List<Car> cars = carService.findLikeCarName(carName);
+        PageInfo info = new PageInfo(cars);
+        return JSONResult.ok(info);
     }
 }
